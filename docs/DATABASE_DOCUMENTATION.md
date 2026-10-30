@@ -1,7 +1,7 @@
 # NESTORA — Database Documentation
 
 > Canonical source: `database/schema.sql`  
-> Migration baseline: `backend/src/main/resources/db/migration/V1__baseline_schema.sql`  
+> Migration baseline: `src/main/resources/db/migration/V1__baseline_schema.sql`
 > Database engine: MySQL 8.0  
 > Database name: `nestora`  
 > Default character set: `utf8mb4`  
@@ -16,6 +16,18 @@
 2. **Flyway Managed:** All development, staging, and production database instances are evolved strictly via Flyway migrations.
 3. **Hibernate Validation:** In `dev` and `prod` profiles, `spring.jpa.hibernate.ddl-auto` is set to `validate`. Hibernate validates that Java entities match the Flyway-applied schema. It is strictly forbidden from executing `update` or `create-drop` in production.
 4. **Validation Scope Note:** Hibernate's `validate` mode verifies table existence, column names, column types, and basic nullability. It does **not** validate composite indexes, full-text indexes, foreign key cascade behaviors, check constraints, generated column expressions, or seed records. Those database-level guarantees are established and verified via Flyway scripts and MySQL engine checks.
+
+### Canonical Schema and Flyway Baseline
+
+`database/schema.sql` is the canonical 14-table schema and standalone bootstrap script; it creates and selects the `nestora` database. Flyway-managed environments should use the configured datasource and apply `V1__baseline_schema.sql` instead. Do not execute the canonical script against a Flyway-managed database.
+
+V1 is the immutable baseline and must not be edited after application. Future schema changes must update the canonical schema and be delivered in a new, incremented Flyway migration.
+
+The canonical schema and V1 define the same 14 tables, columns, enum values, constraints, relationships, generated `slot_lock` expression, and amenity seed values and behavior. Intentional differences are:
+
+- The standalone canonical script creates/selects `nestora`; V1 relies on Flyway's configured database connection.
+- The canonical schema uses strict `CREATE TABLE`; V1 retains `CREATE TABLE IF NOT EXISTS` in the existing baseline.
+- V1 retains a separate `idx_rt_hash` index alongside the unique `token_hash` index. The canonical schema omits that redundant secondary index because the unique index already supports lookups.
 
 ---
 
@@ -83,7 +95,7 @@
   - `UNIQUE KEY (token_hash)`
   - `CONSTRAINT fk_rt_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE`
   - `INDEX idx_rt_user (user_id, revoked)`
-  - `INDEX idx_rt_hash (token_hash)`
+  - V1 retains a redundant non-unique `idx_rt_hash` alongside `UNIQUE KEY (token_hash)`; the canonical schema omits it because the unique index already supports lookups.
 
 ---
 

@@ -61,6 +61,8 @@ Nestora provides a clean, production-grade Spring Boot 3 REST API backend backed
 3. Set required environment variables in your IDE run configuration (e.g. `JWT_SECRET`, `DB_PASSWORD`).
 4. Run `com.nestora.NestoraApplication` with profile `dev`. Flyway will automatically execute `V1__baseline_schema.sql` to initialize all 14 tables.
 
+`database/schema.sql` is the canonical 14-table schema for review and future changes. For Flyway-managed databases, let Flyway apply the migrations; do not manually execute the canonical script. V1 remains the immutable baseline. Future schema changes must update the canonical schema and ship as new Flyway migrations (V2, V3, etc.). Intentional differences between the standalone schema and V1 are documented in `docs/DATABASE_DOCUMENTATION.md`.
+
 ---
 
 ## 6. Environment Variables
