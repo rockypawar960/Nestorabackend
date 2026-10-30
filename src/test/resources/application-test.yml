@@ -1,0 +1,39 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration
+      - org.springframework.boot.actuate.autoconfigure.mail.MailHealthContributorAutoConfiguration
+  datasource:
+    url: jdbc:h2:mem:nestora_test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  flyway:
+    enabled: false
+
+nestora:
+  jwt:
+    secret: test-secret-key-that-is-at-least-32-characters-long-for-hs256
+    access-token-expiry-ms: 900000
+    refresh-token-expiry-ms: 604800000
+  cors:
+    allowed-origins: http://localhost:5173
+  admin:
+    email: admin@test.com
+    password: TestPassword123!
+    name: Test Admin
+  cloudinary:
+    cloud-name: test
+    api-key: test
+    api-secret: test
+
+logging:
+  level:
+    com.nestora: WARN
+    org.springframework.security: WARN
