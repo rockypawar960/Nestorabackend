@@ -35,18 +35,18 @@ Nestora provides a clean, production-grade Spring Boot 3 REST API backend backed
 
 ## 4. Quick Start with Docker Compose
 
-1. Copy `.env.example` to `.env`:
-   ```bash
-   cp .env.example .env
+1. In Windows PowerShell, copy `.env.example` to `.env`:
+   ```powershell
+   Copy-Item .env.example .env
    ```
-2. Configure required environment variables in `.env` (`DB_ROOT_PASSWORD`, `DB_PASSWORD`, `JWT_SECRET`, etc.).
+2. Edit `.env` and set the required local secrets (`DB_ROOT_PASSWORD`, `DB_PASSWORD`, `JWT_SECRET`, and others). Do not commit `.env`.
 3. Build and launch services:
-   ```bash
+   ```powershell
    docker compose up -d --build
    ```
 4. Verify backend health:
-   ```bash
-   curl http://localhost:8080/actuator/health
+   ```powershell
+   Invoke-RestMethod http://localhost:8080/actuator/health
    ```
 
 ---
@@ -87,15 +87,13 @@ http://localhost:8080/v3/api-docs
 
 ## 8. Running Tests
 
-Run the test suite using Maven Wrapper:
-```bash
-./mvnw clean test
+Run the suite from Windows PowerShell with JDK 17 on `PATH`:
+```powershell
+java -version
+.\mvnw.cmd -version
+.\mvnw.cmd clean test
 ```
-On Windows:
-```cmd
-mvnw.cmd clean test
-```
-*Note: Tests run against an in-memory H2 database with the `test` profile (`application-test.yml`) and do not require a running MySQL server. H2 tests do not verify MySQL 8 Flyway migrations; follow `docs/TESTING_AND_SETUP.md` for that check.*
+There are five existing test classes with 25 test methods. They use the H2 `test` profile and do not verify MySQL 8 Flyway migrations; follow `docs/TESTING_AND_SETUP.md` for the real-MySQL check. In the current v0 environment, 0 tests were executed because Java, Maven, Docker, and MySQL were unavailable; no compilation or test pass is claimed.
 
 ---
 
@@ -136,3 +134,7 @@ com.nestora
 | **Phase 6** | Visit Scheduling, Slot Locking & Verified Reviews | 🔜 Pending |
 | **Phase 7** | Real-Time Chat (WebSocket + STOMP Messaging) | 🔜 Pending |
 | **Phase 8** | Final Integration, Security Audit, Verification & Handoff | 🔜 Pending |
+
+### Phase 0 Verification Gates
+
+The approved Phase 0 implementation changes are present on branch `v0/phase0-schema-reconciliation`. Execution remains unverified in the current v0 environment: Java, Maven, Docker, and MySQL are unavailable, so 0 tests were executed and the MySQL 8 migration was not run. No compilation, test, or migration pass is claimed. Keep Phase 0 at **Verification Pending** until the Windows PowerShell commands in `docs/TESTING_AND_SETUP.md` have been run and their actual results recorded.
