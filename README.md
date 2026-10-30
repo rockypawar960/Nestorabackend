@@ -95,7 +95,7 @@ On Windows:
 ```cmd
 mvnw.cmd clean test
 ```
-*Note: Tests run against an in-memory H2 database with the `test` profile (`application-test.yml`) and do not require a running MySQL server.*
+*Note: Tests run against an in-memory H2 database with the `test` profile (`application-test.yml`) and do not require a running MySQL server. H2 tests do not verify MySQL 8 Flyway migrations; follow `docs/TESTING_AND_SETUP.md` for that check.*
 
 ---
 
@@ -127,7 +127,7 @@ com.nestora
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| **Phase 0** | Project Foundation, Architecture, DB Baseline, Security Skeleton, Tests | ✅ Complete |
+| **Phase 0** | Project Foundation, Architecture, DB Baseline, Security Skeleton, Tests | Verification Pending |
 | **Phase 1** | Authentication & User Management (JWT, Refresh Token, OTP, Admin Seed) | 🔜 Pending |
 | **Phase 2** | Listing Management (CRUD, Cloudinary Images, Amenities) | 🔜 Pending |
 | **Phase 3** | Search, Filters, Listing Details & Wishlist | 🔜 Pending |
